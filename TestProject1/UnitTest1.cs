@@ -120,6 +120,39 @@ public class Tests
             Assert.That(calculator.Calculate(str2), Is.EqualTo(sum));
         }
     }
+    
+    // 9. A multi char delimiter can be defined on the first line (e.g. //[###] for ‘###’ as the delimiter)
+    [Test]
+    public void Test9()
+    {
+        foreach (var a in ExampleNumbers)
+        foreach (var b in ExampleNumbers)
+        {
+            var sum = a + b;
+            var delimiter = "###";
+            var str = $"//[{delimiter}]\n{a}{delimiter}{b}";
+            Assert.That(calculator.Calculate(str), Is.EqualTo(sum));
+            delimiter = "@$@";
+            var str2 = $"//[{delimiter}]\n{a}{delimiter}{b}";
+            Assert.That(calculator.Calculate(str2), Is.EqualTo(sum));
+        }
+    }
+    
+    // 10. Many single or multi-char delimiters can be defined (each wrapped in square brackets)
+    [Test]
+    public void Test10()
+    {
+        foreach (var a in ExampleNumbers)
+        foreach (var b in ExampleNumbers)
+        {
+            var sum = a + b + a + b;
+            var delimiter1 = "###";
+            var delimiter2 = "@$@";
+            var delimiter3 = '%';
+            var str = $"//[{delimiter1}][{delimiter2}][{delimiter3}]\n{a}{delimiter1}{b}{delimiter3}{a}{delimiter2}{b}";
+            Assert.That(calculator.Calculate(str), Is.EqualTo(sum));
+        }
+    }
 
     private static readonly int[] ExampleNumbers = [0, 2, 5, 42, 100, 999];
     private static readonly int[] BigNumbers = [1025, 42100, 9999999];
